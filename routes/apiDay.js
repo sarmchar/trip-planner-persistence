@@ -11,7 +11,6 @@ var Day = require('../models/day');
 dayRouter.get('/', function(req, res, next) {
   Day.findAll()
   .then(function(dayArr){
-    console.log(dayArr);
     res.json(dayArr);
   });
 });
@@ -22,6 +21,7 @@ dayRouter.get('/:id', function(req, res, next) {
   .then(function(day){
     res.json(day);
   })
+  .catch(next);
 });
 
 dayRouter.delete('/:id', function(req, res, next) {
@@ -41,16 +41,22 @@ dayRouter.put('/', function(req, res, next) {
   })
   .then(function(day){
     res.json(day);
-  })
+  });
 });
 
-// dayRouter.put('/:id/restaurants', function(req, res, next) {
-//   var numId = +req.params.id;
-//   .findById(numId)
-//   .then(function(day){
-//     res.json(day);
-//   })
-// });
+dayRouter.put('/:id/restaurants', function(req, res, next) {
+  var numId = +req.params.id;
+  Day.findAll({
+  include: [{
+    model: Restaurant
+  }]
+});
+
+  .findById(numId)
+  .then(function(day){
+    res.json(day);
+  })
+});
 
 dayRouter.put('/:id/hotels', function(req, res, next) {
   var num = +req.body.number;
