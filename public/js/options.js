@@ -18,9 +18,20 @@ $(function(){
   var $activitySelect = $optionsPanel.find('#activity-choices');
 
   // make all the option tags (second arg of `forEach` is a `this` binding)
-  hotels.forEach(makeOption, $hotelSelect);
-  restaurants.forEach(makeOption, $restaurantSelect);
-  activities.forEach(makeOption, $activitySelect);
+
+  restaurantPromise
+  .then(function(restaurants){
+    restaurants.forEach(makeOption, $restaurantSelect);
+  }).catch(console.error.bind(console));
+  hotelPromise
+  .then(function(hotels){
+    hotels.forEach(makeOption, $hotelSelect);
+  }).catch(console.error.bind(console));
+  activityPromise
+  .then(function(activities){
+    activities.forEach(makeOption, $activitySelect);
+  }).catch(console.error.bind(console));
+
 
   function makeOption (databaseAttraction) {
     var $option = $('<option></option>') // makes a new option tag
